@@ -54,7 +54,7 @@
 .box4 {
   border: 4px double black;
   width: 20vw;
-  height: 30vh;
+  height: 20vh;
   transition: all .8s ease-in-out;
 }
 
@@ -109,4 +109,27 @@
 
 .container-fluid {
   padding: 0;
+}
+
+#menu{
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  position: fixed;
+  transition: all 1s ease-in-out;
+}
+
+.loadingbox {
+  font-size: xx-large;
+  text-align: center;
+  color: white;
+  margin-top: 45vh;
+}
+
+#pageLoadComplete {
+  display: none;
+}
+
+#bcgmusic {
+  display: block;
 }
