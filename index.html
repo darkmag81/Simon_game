@@ -9,21 +9,16 @@
     <link rel="stylesheet" href="css/style.css" type="text/css" />
     <script src="assets/jquery-3.3.1.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <title>Watch Remember Repeat!!!</title>
 </head>
 
-<body onload="start()">
+<body>
     <div id="menu">
         <div class="loadingbox">
             Loading assets... Please wait...
-            <p id="pageLoadComplete"><span>  Done... Please</span><span onclick="clearLoad()" style="color:red">        click here  </span></p>
+            <p><span>  Done... Please</span><span id="hideLoad" onclick="clearLoad()">click here  </span></p>
         </div>
-    </div>
-    <div id="music">
-        <audio id="bcgmusic" autoplay>
-      <source src="assets/bensound-scifi.mp3" type="audio/mpeg">
-      <p>If you can read this, your browser does not support the audio element.</p>
-    </audio>
     </div>
     <header>
         <div class="container-fluid">
@@ -39,33 +34,32 @@
             <div class="row">
                 <div class="leftside">
                     <p>Chain no:</p>
-                    <p class="chainNumber">1</p>
+                    <p id="chainNumber">4</p>
                     <p>Score:</p>
                     <p class="score">0</p>
                 </div>
                 <div class="middle">
-                    <p class="newGamePar"><button class="startGameButton" onclick="startGame()">Start Game!</button></p>
+                    <p class="newGamePar"><button id="newGameButton" class="startGameButton" onclick="startGame()">Start Game!</button></p>
                     <div class="row">
 
-                        <div class="box1">
+                        <div id="b1" class="box1">
 
                         </div>
-                        <div class="box2">
+                        <div id="b2" class="box2">
 
                         </div>
-                        <div class="box3">
+                        <div id="b3" class="box3">
 
                         </div>
-                        <div class="box4">
+                        <div id="b4" class="box4">
 
                         </div>
                     </div>
-
-
-
                 </div>
                 <div class="rightside">
-
+                    <p>Hall of Fame</p>
+                    <p id="gameLog">Testing...</p>
+                    <p id="log2">Testing</p>
                 </div>
             </div>
         </div>
@@ -79,45 +73,7 @@
             </div>
         </div>
     </footer>
-    <script>
-        //var testVar = 230;
-        function start() {
-            document.getElementById("pageLoadComplete").style.display = "block";
-        }
-
-        function clearLoad() {
-            document.getElementById("menu").style.display = "none";
-            go_full_screen();
-        }
-
-        function startGame() {
-
-        }
-
-        function go_full_screen() {
-            var elem = document.documentElement;
-            if (document.webkitIsFullScreen == false) {
-
-                if (elem.requestFullscreen) {
-                    elem.requestFullscreen();
-                }
-                else if (elem.msRequestFullscreen) {
-                    elem.msRequestFullscreen();
-                }
-                else if (elem.mozRequestFullScreen) {
-                    elem.mozRequestFullScreen();
-                }
-                else if (elem.webkitRequestFullscreen) {
-                    elem.webkitRequestFullscreen();
-                }
-            }
-            else if (document.webkitIsFullScreen == true) {
-                document.webkitExitFullscreen();
-            }
-        }
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-
+    <script type="text/javascript" src="assets/script.js"></script>
 </body>
 
 </html>
