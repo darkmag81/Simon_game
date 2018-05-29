@@ -1,0 +1,263 @@
+html,
+body {
+  background-color: black;
+}
+
+.heading {
+  width: 100vw;
+  height: 8vh;
+  min-height: 70px;
+  background-color: blue;
+  border-bottom: 1px solid white;
+}
+
+.bottom-panel {
+  border-top: 1px solid white;
+  padding-top: 3px;
+  width: 100vw;
+  height: auto;
+  color: white;
+  text-align: center;
+}
+
+p>span {
+  color: red;
+}
+
+.main {
+  width: 100vw;
+  height: auto;
+  background-color: black;
+}
+
+.active:hover {
+  background-color: red;
+  cursor: pointer;
+}
+
+.active {
+  transition: all .4s ease-in-out;
+}
+
+.top-row,
+.middle-row,
+.bottom-row {
+  display: flex;
+  justify-content: center;
+}
+
+h3 {
+  margin-top: 1vh;
+  color: white;
+  text-align: center;
+}
+
+h6 {
+  color: white;
+  font-style: italic;
+  text-align: center;
+}
+
+.pad {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 15px;
+}
+
+.menu {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid white;
+  color: white;
+  text-shadow: 0 0 42px gold;
+  text-align: center;
+  font-size: small;
+  display: flex;
+}
+
+.menu p {
+  margin: auto;
+}
+
+.red {
+  border: 3px solid red;
+}
+
+.blue {
+  border: 3px solid blue;
+  display: none;
+}
+
+.green {
+  border: 3px solid green;
+}
+
+.yellow {
+  border: 3px solid yellow;
+}
+
+.white {
+  border: 3px solid white;
+}
+
+.purple {
+  border: 3px solid purple;
+  display: none
+}
+
+.fill {
+  background-color: white;
+}
+
+.bottom-panel>p {
+  margin-bottom: 0;
+  font-size: small;
+  display: inline-block;
+}
+
+.settings {
+  position: fixed;
+  color: white;
+  top: 165px;
+  right: 0;
+  background-color: green;
+  border-bottom-left-radius: 50%;
+  border-top-left-radius: 50%;
+  transition: all .5s ease-in-out;
+}
+
+.settings:hover {
+  background-color: darkgreen;
+  border-left: 1px solid white;
+  cursor: pointer;
+}
+
+.settings p {
+  margin: 2px;
+  padding-left: 5px;
+}
+
+.top10 {
+  position: fixed;
+  color: white;
+  top: 200px;
+  right: 0;
+  background-color: blue;
+  border-bottom-left-radius: 50%;
+  border-top-left-radius: 50%;
+  transition: all .5s ease-in-out;
+}
+
+.top10 p {
+  margin: 2px;
+  padding-left: 3px;
+}
+
+.top10:hover {
+   background-color: darkblue;
+   border-left: 1px solid white;
+   cursor: pointer;
+}
+
+.fullscreen {
+  position: fixed;
+  color: white;
+  top: 130px;
+  right: 0;
+  background-color: red;
+  border-bottom-left-radius: 50%;
+  border-top-left-radius: 50%;
+  transition: all .5s ease-in-out;
+}
+
+.fullscreen p {
+  margin: 2px;
+  padding-left: 5px;
+  margin-right: 5px;
+}
+
+.fullscreen:hover {
+  background-color: darkred;
+  border-left: 1px solid white;
+  cursor: pointer;
+}
+
+.settingsCard {
+  position: fixed;
+  width: 100vw;
+  height: 8vh;
+  min-height: 70px;
+  background-color: #484a4c;
+  top: 0px;
+  opacity: 0;
+  border-bottom: 1px solid white;
+  display: flex;
+  z-index: -10;
+}
+
+.top10Card {
+  position: fixed;
+  width: 100vw;
+  top:0;
+  height: 100vh;
+  background-color: #484a4c;
+  opacity: 0;
+  z-index: -100;
+  display: flex;
+  
+}
+
+.gameInfo {
+  position: absolute; 
+  font-size: xx-small;
+  margin: 0;
+  padding: 3px;
+  color: white;
+}
+
+.gameInfo p {
+  margin-left: 6px;
+  float: left;
+}
+
+.button {
+  margin: auto;
+}
+
+#resetButton {
+  background-color: red;
+  border:1px solid black;
+  color: black;
+  border-radius: 10%;
+  padding: 5px;
+  font-size: xx-small;
+  transition: all .5s ease-in-out;
+}
+
+#resetButton:hover {
+  background-color: orange;
+  cursor: pointer;
+}
+
+#db {
+  background-color: blue;
+  border:1px solid black;
+  color: black;
+  border-radius: 10%;
+  padding: 5px;
+  font-size: xx-small;
+  transition: all .5s ease-in-out;
+}
+
+#db:hover {
+  background-color: lightblue;
+    cursor: pointer;
+}
+
+.settingsCard p {
+  color: white;
+  margin: auto;
+}
+
