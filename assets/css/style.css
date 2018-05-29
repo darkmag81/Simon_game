@@ -1,6 +1,8 @@
 html,
 body {
   background-color: black;
+  height: 100%;
+  overflow: hidden;
 }
 
 .heading {
@@ -12,10 +14,11 @@ body {
 }
 
 .bottom-panel {
+  margin-top: 25px;
   border-top: 1px solid white;
   padding-top: 3px;
   width: 100vw;
-  height: auto;
+  height: 23vh;
   color: white;
   text-align: center;
 }
@@ -39,7 +42,12 @@ p>span {
   transition: all .4s ease-in-out;
 }
 
-.top-row,
+.top-row {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+}
+
 .middle-row,
 .bottom-row {
   display: flex;
@@ -156,9 +164,9 @@ h6 {
 }
 
 .top10:hover {
-   background-color: darkblue;
-   border-left: 1px solid white;
-   cursor: pointer;
+  background-color: darkblue;
+  border-left: 1px solid white;
+  cursor: pointer;
 }
 
 .fullscreen {
@@ -170,6 +178,30 @@ h6 {
   border-bottom-left-radius: 50%;
   border-top-left-radius: 50%;
   transition: all .5s ease-in-out;
+}
+
+#soundButton {
+  position: fixed;
+  color: white;
+  top: 2px;
+  right: 4px;
+  transition: all .5s ease-in-out;
+  font-size: xx-small;
+}
+
+#soundButton:hover {
+  color: gold;
+  cursor: pointer;
+}
+
+#nosound {
+  position: fixed;
+  color: black;
+  top: 2px;
+  right: 5px;
+  transition: all .5s ease-in-out;
+  font-size: small;
+  visibility: hidden;
 }
 
 .fullscreen p {
@@ -200,17 +232,25 @@ h6 {
 .top10Card {
   position: fixed;
   width: 100vw;
-  top:0;
+  top: 0;
   height: 100vh;
   background-color: #484a4c;
   opacity: 0;
   z-index: -100;
   display: flex;
-  
+}
+
+.scoreTable {
+  margin: auto;
+  color: white;
+}
+
+.scoreTable p {
+  margin: 0;
 }
 
 .gameInfo {
-  position: absolute; 
+  position: absolute;
   font-size: xx-small;
   margin: 0;
   padding: 3px;
@@ -226,9 +266,9 @@ h6 {
   margin: auto;
 }
 
-#resetButton {
+#rndPatternButton {
   background-color: red;
-  border:1px solid black;
+  border: 1px solid black;
   color: black;
   border-radius: 10%;
   padding: 5px;
@@ -236,14 +276,14 @@ h6 {
   transition: all .5s ease-in-out;
 }
 
-#resetButton:hover {
+#rndPatternButton:hover {
   background-color: orange;
   cursor: pointer;
 }
 
 #db {
   background-color: blue;
-  border:1px solid black;
+  border: 1px solid black;
   color: black;
   border-radius: 10%;
   padding: 5px;
@@ -253,11 +293,10 @@ h6 {
 
 #db:hover {
   background-color: lightblue;
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .settingsCard p {
   color: white;
   margin: auto;
 }
-
