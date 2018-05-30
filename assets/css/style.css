@@ -91,29 +91,60 @@ h6 {
 
 .red {
   border: 3px solid red;
+  transition: all .3s ease-in-out;
 }
 
 .blue {
   border: 3px solid blue;
   display: none;
+  transition: all .3s ease-in-out;
 }
 
 .green {
   border: 3px solid green;
+  transition: all .3s ease-in-out;
 }
 
 .yellow {
   border: 3px solid yellow;
+  transition: all .3s ease-in-out;
 }
 
 .white {
   border: 3px solid white;
+  transition: all .3s ease-in-out;
 }
 
 .purple {
   border: 3px solid purple;
-  display: none
+  display: none;
+  transition: all .3s ease-in-out;
 }
+
+.red:hover {
+  border: 20px solid red;
+}
+
+.blue:hover {
+  border: 20px solid blue;
+}
+
+.green:hover {
+  border: 20px solid green;
+}
+
+.white:hover {
+  border: 20px solid white;
+}
+
+.purple:hover {
+  border: 20px solid purple;
+}
+
+.yellow:hover {
+  border: 20px solid yellow;
+}
+
 
 .fill {
   background-color: white;
@@ -299,4 +330,9 @@ h6 {
 .settingsCard p {
   color: white;
   margin: auto;
+}
+
+.smallText {
+  padding-top: 30px;
+  font-size: .5em;
 }

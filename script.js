@@ -24,6 +24,7 @@ var dif = 4;
 var del = 3000;
 var sound = true;
 var rndPattern = false;
+var inGameDelay = 3000;
 $("#chain").text($chain);
 $("#menu").on("click", function() { start() });
 $("#settingsButton").on("click", function() { settings() });
@@ -35,7 +36,7 @@ function top10() {
     if (sound) { aud.sound.click.play(); }
     if (!top10Card) {
         $(".top10Card").css("z-index", "10");
-        $(".top10Card").animate({ opacity: .8 }, 500);
+        $(".top10Card").animate({ opacity: .9 }, 500);
         $(".top10Card").css("cursor", "pointer");
         $(".top10Card").off("click");
         $(".top10Card").on("click", function() { top10() });
@@ -122,30 +123,28 @@ function flash(pad, color) {
 
 function go_full_screen() {
     if (sound) { aud.sound.click.play(); }
-    var docElm = document.documentElement;
-    if (docElm.requestFullscreen) {
-        docElm.requestFullscreen();
+    if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+        (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+        if (document.documentElement.requestFullScreen) {
+            document.documentElement.requestFullScreen();
+        }
+        else if (document.documentElement.mozRequestFullScreen) {
+            document.documentElement.mozRequestFullScreen();
+        }
+        else if (document.documentElement.webkitRequestFullScreen) {
+            document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+        }
     }
-    else if (docElm.mozRequestFullScreen) {
-        docElm.mozRequestFullScreen();
-    }
-    else if (docElm.webkitRequestFullScreen) {
-        docElm.webkitRequestFullScreen();
-    }
-    else if (docElm.msRequestFullscreen) {
-        docElm.msRequestFullscreen();
-    }
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    }
-    else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-    }
-    else if (document.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen();
-    }
-    else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
+    else {
+        if (document.cancelFullScreen) {
+            document.cancelFullScreen();
+        }
+        else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        }
+        else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+        }
     }
 }
 
@@ -177,12 +176,15 @@ function setDif() {
 
 function playerRound() {
     game.player = [];
-    $("#b1").on("click", function() { player(this.id) });
-    $("#b2").on("click", function() { player(this.id) });
-    $("#b3").on("click", function() { player(this.id) });
-    $("#b4").on("click", function() { player(this.id) });
-    $("#b5").on("click", function() { player(this.id) });
-    $("#b6").on("click", function() { player(this.id) });
+    setTimeout(function() {
+        $("#b1").on("click", function() { player(this.id) });
+        $("#b2").on("click", function() { player(this.id) });
+        $("#b3").on("click", function() { player(this.id) });
+        $("#b4").on("click", function() { player(this.id) });
+        $("#b5").on("click", function() { player(this.id) });
+        $("#b6").on("click", function() { player(this.id) });
+        checkPlayer();
+    }, inGameDelay + game.move.length * 1000);
 }
 
 function player(box) {
@@ -296,7 +298,13 @@ function DisplayCountdown() {
     setTimeout(function() { $("#menu p").text("Remember") }, 600);
     setTimeout(function() { $("#menu p").text("Repeat") }, 1200);
     setTimeout(function() { $("#menu p").text("") }, 1800);
-    setTimeout(function() { $("#menu p").text("Round: " + $chain) }, 2400);
+    setTimeout(function() { $("#menu p").text("Round: " + $chain) }, 2000);
+}
+
+function checkPlayer() {
+    game.move.forEach(function() {
+        console.log("checking player");
+    });
 }
 
 function start() {
@@ -308,6 +316,7 @@ function start() {
     updateDisplay();
     DisplayCountdown();
     showMoves();
-    activateButtons();
+    playerRound();
     $chain++;
+//activateButtons();
 }
