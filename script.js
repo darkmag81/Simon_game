@@ -2,6 +2,8 @@ var game = {
     difficulty: "easy",
     move: [],
     player: [],
+    count: 0,
+    score: 0,
 };
 var aud = {
     sound: {
@@ -19,36 +21,40 @@ var aud = {
 };
 var settingsCard = false;
 var top10Card = false;
-var $chain = 0;
 var dif = 4;
 var del = 3000;
 var sound = true;
+var endG = false;
 var rndPattern = false;
 var inGameDelay = 3000;
-$("#chain").text($chain);
+$("#chain").text(game.count);
 $("#menu").on("click", function() { start() });
 $("#settingsButton").on("click", function() { settings() });
 $("#top10Button").on("click", function() { top10() });
-$(".top10Card").on("click", function() { top10() });
+$("#top10Card").on("click", function() { top10() });
 $("#soundButton").on("click", function() { soundToggle() });
 
+$(document).ready(function() {
+    $(".loadingScreen").css("display", "none");
+});
+
 function top10() {
-    if (sound) { aud.sound.click.play(); }
+    playSound("click");
     if (!top10Card) {
-        $(".top10Card").css("z-index", "10");
-        $(".top10Card").animate({ opacity: .9 }, 500);
-        $(".top10Card").css("cursor", "pointer");
-        $(".top10Card").off("click");
-        $(".top10Card").on("click", function() { top10() });
+        $("#top10Card").css("z-index", "10");
+        $("#top10Card").animate({ opacity: .9 }, 500);
+        $("#top10Card").css("cursor", "pointer");
+        $("#top10Card").off("click");
+        $("#top10Card").on("click", function() { top10() });
         $("#menu").off("click");
         $("#menu").toggleClass("active", "");
         top10Card = true;
     }
     else if (top10Card) {
-        $(".top10Card").css("z-index", "-100");
-        $(".top10Card").animate({ opacity: 0 }, 500);
-        $(".top10Card").css("cursor", "default");
-        $(".top10Card").off("click");
+        $("#top10Card").css("z-index", "-100");
+        $("#top10Card").animate({ opacity: 0 }, 500);
+        $("#top10Card").css("cursor", "default");
+        $("#top10Card").off("click");
         $("#menu").toggleClass("active", "");
         $("#menu").on("click", function() { start() });
         top10Card = false;
@@ -56,7 +62,7 @@ function top10() {
 }
 
 function randomPattern() {
-    if (sound) { aud.sound.click.play(); }
+    playSound("click");
     if (!rndPattern) {
         rndPattern = true;
         $("#rndPattern").text("Yes");
@@ -79,7 +85,7 @@ function soundToggle() {
 }
 
 function settings() {
-    if (sound) { aud.sound.click.play(); }
+    playSound("click");
     if (settingsCard == false) {
         $("#sc").animate({ opacity: 1 }, 500);
         $("#sc").css("z-index", "10");
@@ -121,8 +127,84 @@ function flash(pad, color) {
     }
 }
 
-function go_full_screen() {
-    if (sound) { aud.sound.click.play(); }
+function isTouchDevice() {
+    if ("ontouchstart" in document.documentElement) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function hoverEffectsOn() {
+    function b1hoverin() {
+        $("#b1").css("border", "20px solid red");
+    }
+
+    function b1hoverout() {
+        $("#b1").css("border", "3px solid red");
+    }
+
+    function b2hoverin() {
+        $("#b2").css("border", "20px solid yellow");
+    }
+
+    function b2hoverout() {
+        $("#b2").css("border", "3px solid yellow");
+    }
+
+    function b3hoverin() {
+        $("#b3").css("border", "20px solid white");
+    }
+
+    function b3hoverout() {
+        $("#b3").css("border", "3px solid white");
+    }
+
+    function b4hoverin() {
+        $("#b4").css("border", "20px solid green");
+    }
+
+    function b4hoverout() {
+        $("#b4").css("border", "3px solid green");
+    }
+
+    function b5hoverin() {
+        $("#b5").css("border", "20px solid blue");
+    }
+
+    function b5hoverout() {
+        $("#b5").css("border", "3px solid blue");
+    }
+
+    function b6hoverin() {
+        $("#b6").css("border", "20px solid purple");
+    }
+
+    function b6hoverout() {
+        $("#b6").css("border", "3px solid purple");
+    }
+    $("#b1").on("mouseover", b1hoverin);
+    $("#b1").on("mouseout", b1hoverout);
+    $("#b5").on("mouseover", b5hoverin);
+    $("#b5").on("mouseout", b5hoverout);
+    $("#b4").on("mouseover", b4hoverin);
+    $("#b4").on("mouseout", b4hoverout);
+    $("#b6").on("mouseover", b6hoverin);
+    $("#b6").on("mouseout", b6hoverout);
+    $("#b3").on("mouseover", b3hoverin);
+    $("#b3").on("mouseout", b3hoverout);
+    $("#b2").on("mouseover", b2hoverin);
+    $("#b2").on("mouseout", b2hoverout);
+}
+
+function hoverEffectsOff() {
+    $(".pad").off("mouseover");
+    $(".pad").off("mouseout");
+}
+
+function goFullScreen() {
+    playSound("click");
     if ((document.fullScreenElement && document.fullScreenElement !== null) ||
         (!document.mozFullScreen && !document.webkitIsFullScreen)) {
         if (document.documentElement.requestFullScreen) {
@@ -149,7 +231,7 @@ function go_full_screen() {
 }
 
 function diff() {
-    if (sound) { aud.sound.click.play(); }
+    playSound("click");
     if (game.difficulty == "hard") {
         $("#b5").toggle(200);
         $("#b6").toggle(200);
@@ -174,24 +256,55 @@ function setDif() {
     else if (game.difficulty == "hard") { dif = 6 }
 }
 
+function deactivatePadHandlers() {
+    $("#b1").off("click");
+    $("#b2").off("click");
+    $("#b3").off("click");
+    $("#b4").off("click");
+    $("#b5").off("click");
+    $("#b6").off("click");
+}
+
+function playSound(snd) {
+    if (sound) { aud.sound[snd].play(); }
+
+}
+
 function playerRound() {
     game.player = [];
     setTimeout(function() {
-        $("#b1").on("click", function() { player(this.id) });
-        $("#b2").on("click", function() { player(this.id) });
-        $("#b3").on("click", function() { player(this.id) });
-        $("#b4").on("click", function() { player(this.id) });
-        $("#b5").on("click", function() { player(this.id) });
-        $("#b6").on("click", function() { player(this.id) });
+        $("#b1").on("click", function() {
+            addMove(this.id);
+            playSound(this.id)
+        });
+        $("#b2").on("click", function() {
+            addMove(this.id);
+            playSound(this.id)
+        });
+        $("#b3").on("click", function() {
+            addMove(this.id);
+            playSound(this.id)
+        });
+        $("#b4").on("click", function() {
+            addMove(this.id);
+            playSound(this.id)
+        });
+        $("#b5").on("click", function() {
+            addMove(this.id);
+            playSound(this.id)
+        });
+        $("#b6").on("click", function() {
+            addMove(this.id);
+            playSound(this.id)
+        });
         checkPlayer();
+        if (!isTouchDevice()) { hoverEffectsOn() }
     }, inGameDelay + game.move.length * 1000);
 }
 
-function player(box) {
-    game.player.push(box);
-    game.player.forEach(function(elem, t) {
-        console.log(elem, t);
-    });
+function addMove(pad) {
+    game.player.push(pad);
+    checkPlayer();
 }
 
 function addMoveToPattern() {
@@ -200,11 +313,12 @@ function addMoveToPattern() {
         game.move.push("b" + rnd);
     }
     else if (rndPattern) {
-        for (var r = 0; r < $chain + 1; r++) {
+        for (var r = 0; r < game.count; r++) {
             var rnd = Math.floor(Math.random() * dif) + 1;
             game.move[r] = ("b" + rnd);
         }
     }
+    showMoves();
 }
 
 function colorPick(step) {
@@ -243,7 +357,7 @@ function colorPick(step) {
 
 function deactivateButtons() {
     $("#menu").off("click");
-    $(".top10Card").off("click");
+    $("#top10Card").off("click");
     $("#top10Button").off("click");
     $("#settingsButton").off("click");
     $("#settingsButton").css("cursor", "default");
@@ -255,7 +369,7 @@ function deactivateButtons() {
 function activateButtons() {
     setTimeout(function() {
         $("#menu p").html('<i class="fas fa-play"></i>');
-        $("#menu").toggleClass("active", "");
+        $("#menu").addClass("active");
         $("#menu").on("click", function() { start() });
         $("#settingsButton").on("click", function() { settings() });
         $("#settingsButton").animate({ opacity: 1 }, 200);
@@ -268,13 +382,23 @@ function activateButtons() {
 }
 
 function showMoves() {
+    updateDisplay();
+    deactivatePadHandlers();
+    DisplayCountdown();
     game.move.forEach(function(element, x) {
         setTimeout(function() {
             flash(element, colorPick(element));
-            if (sound) { aud.sound[element].play(); }
+            //shadowTwist(this.game.move, colorPick(element));
+            playSound(element);
         }, 1000 * x + del);
         setTimeout(function() { flash(element, "black") }, 1000 * x + 200 + del);
     });
+    clearPlayer();
+    playerRound();
+}
+
+function clearPlayer() {
+    game.player = [];
 }
 
 function checkIfSettingsOpen() {
@@ -289,34 +413,102 @@ function checkIfSettingsOpen() {
 
 function updateDisplay() {
     $("#move").text(game.move);
-    $("#menu").toggleClass("active", "");
+    $("#menu").addClass("active");
     $("#menu p").text("");
+    $("#roundCounter").text(game.count);
 }
 
 function DisplayCountdown() {
+    if (!isTouchDevice()) { hoverEffectsOff() }
     setTimeout(function() { $("#menu p").text("Watch") }, 100);
     setTimeout(function() { $("#menu p").text("Remember") }, 600);
     setTimeout(function() { $("#menu p").text("Repeat") }, 1200);
     setTimeout(function() { $("#menu p").text("") }, 1800);
-    setTimeout(function() { $("#menu p").text("Round: " + $chain) }, 2000);
+    setTimeout(function() { $("#menu p").text("Round: " + game.count) }, 2000);
+    setTimeout(function() { $("#menu p").text("GO!!!") }, 2500);
+}
+
+function quick(text) {
+    $("#quickBar p").text(text);
+    $("#quickBar").animate({ top: 0 }, 200).delay(300).animate({ top: -70 }, 200);
 }
 
 function checkPlayer() {
-    game.move.forEach(function() {
-        console.log("checking player");
-    });
+
+    if ((game.player[game.player.length - 1] == game.move[game.player.length - 1]) && game.player.length > 0) {
+        $("#menu p").text("Good");
+        setTimeout(function() { $("#menu p").text(""); }, 400)
+    }
+    else if (game.player[game.player.length - 1] !== game.move[game.player.length - 1]) {
+        $("#menu p").text("Game Over");
+        quick("Bad Move... :(")
+        setTimeout(function() {
+            if (!isTouchDevice()) {
+                hoverEffectsOff();
+            }
+            endGame();
+            endG = true;
+        }, 1300);
+    }
+    if (!endG) {
+        var check = game.player.length === game.move.length;
+        if (check) {
+            setTimeout(function() {
+                $("#menu p").text("Next Round");
+                nextLevel();
+            }, 1300);
+        }
+    }
 }
 
-function start() {
-    if (sound) { aud.sound.advance.play(); }
+function updateScore() {
+    game.score += game.move.length * (dif - 3);
+    $("#score").text(game.score);
+    switch (game.player.length) {
+        case 1:
+            quick("Good Start");
+            break;
+        case 3:
+            quick("Keep going");
+            break;
+        case 5:
+            quick("Well Done");
+            break;
+    }
+}
+
+function nextLevel() {
+    updateScore();
+    addCount();
+}
+
+function prepareNewGame() {
+    game.move = [];
+    game.player = [];
+    game.count = 0;
+    game.score = 0;
+    addCount();
+}
+
+function addCount() {
+    game.count++;
     deactivateButtons();
     setDif();
     checkIfSettingsOpen();
     addMoveToPattern();
-    updateDisplay();
-    DisplayCountdown();
-    showMoves();
-    playerRound();
-    $chain++;
-//activateButtons();
+
+}
+
+function endGame() {
+    game.move = [];
+    game.player = [];
+    game.count = 0;
+    endG = false;
+    deactivatePadHandlers();
+    activateButtons();
+}
+
+function start() {
+    playSound("advance");
+    prepareNewGame();
 }

@@ -13,6 +13,22 @@ body {
   border-bottom: 1px solid white;
 }
 
+#quickBar {
+  position: absolute;
+  width: 100vw;
+  height: 8vh;
+  min-height: 70px;
+  background-color: black;
+  z-index: 20;
+  display:flex;
+  top:-70px;
+}
+
+#quickBar p {
+  color: white;
+  margin: auto;
+}
+
 .bottom-panel {
   margin-top: 25px;
   border-top: 1px solid white;
@@ -58,11 +74,24 @@ h3 {
   margin-top: 1vh;
   color: white;
   text-align: center;
+  margin-bottom: 0;
+}
+
+.t1 {
+  font-family: 'Permanent Marker', cursive;
+}
+
+.t2 {
+  margin-left: 25px;
+  font-family: 'Nanum Brush Script', cursive;
+  font-weight: bold;
+  font-size: x-large;
 }
 
 h6 {
   color: white;
-  font-style: italic;
+  font-family: 'Caveat', cursive;
+
   text-align: center;
 }
 
@@ -79,72 +108,54 @@ h6 {
   border-radius: 50%;
   border: 3px solid white;
   color: white;
-  text-shadow: 0 0 42px gold;
   text-align: center;
   font-size: small;
   display: flex;
+  box-shadow: 10px 10px 45px -4px grey;
 }
 
 .menu p {
   margin: auto;
+  text-shadow: 0 0 42px gold;
 }
 
 .red {
   border: 3px solid red;
   transition: all .3s ease-in-out;
+  box-shadow: 10px 10px 45px 1px red;
 }
 
 .blue {
   border: 3px solid blue;
   display: none;
   transition: all .3s ease-in-out;
+  box-shadow: 10px 10px 45px -4px blue;
 }
 
 .green {
   border: 3px solid green;
   transition: all .3s ease-in-out;
+  box-shadow: 10px 10px 45px 3px green;
 }
 
 .yellow {
   border: 3px solid yellow;
   transition: all .3s ease-in-out;
+  box-shadow: 10px 10px 45px -4px yellow;
 }
 
 .white {
   border: 3px solid white;
   transition: all .3s ease-in-out;
+  box-shadow: 10px 10px 45px -4px white;
 }
 
 .purple {
   border: 3px solid purple;
   display: none;
   transition: all .3s ease-in-out;
+  box-shadow: 10px 10px 45px 2px purple;
 }
-
-.red:hover {
-  border: 20px solid red;
-}
-
-.blue:hover {
-  border: 20px solid blue;
-}
-
-.green:hover {
-  border: 20px solid green;
-}
-
-.white:hover {
-  border: 20px solid white;
-}
-
-.purple:hover {
-  border: 20px solid purple;
-}
-
-.yellow:hover {
-  border: 20px solid yellow;
-}
-
 
 .fill {
   background-color: white;
@@ -157,7 +168,7 @@ h6 {
 }
 
 .settings {
-  position: fixed;
+  position: absolute;
   color: white;
   top: 165px;
   right: 0;
@@ -165,6 +176,7 @@ h6 {
   border-bottom-left-radius: 50%;
   border-top-left-radius: 50%;
   transition: all .5s ease-in-out;
+  box-shadow: 10px 10px 45px -4px green;
 }
 
 .settings:hover {
@@ -179,7 +191,7 @@ h6 {
 }
 
 .top10 {
-  position: fixed;
+  position: absolute;
   color: white;
   top: 200px;
   right: 0;
@@ -187,6 +199,7 @@ h6 {
   border-bottom-left-radius: 50%;
   border-top-left-radius: 50%;
   transition: all .5s ease-in-out;
+  box-shadow: 10px 10px 45px -4px blue;
 }
 
 .top10 p {
@@ -201,7 +214,7 @@ h6 {
 }
 
 .fullscreen {
-  position: fixed;
+  position: absolute;
   color: white;
   top: 130px;
   right: 0;
@@ -209,15 +222,22 @@ h6 {
   border-bottom-left-radius: 50%;
   border-top-left-radius: 50%;
   transition: all .5s ease-in-out;
+  box-shadow: 10px 10px 45px -4px red;
 }
 
 #soundButton {
   position: fixed;
   color: white;
+  height: 13px;
   top: 2px;
   right: 4px;
   transition: all .5s ease-in-out;
   font-size: xx-small;
+  z-index: 11;
+}
+
+#soundButton p {
+  float: left;
 }
 
 #soundButton:hover {
@@ -226,12 +246,12 @@ h6 {
 }
 
 #nosound {
-  position: fixed;
-  color: black;
-  top: 2px;
-  right: 5px;
+  position: absolute;
+  color: white;
+  top: 3px;
+  right: 12px;
   transition: all .5s ease-in-out;
-  font-size: small;
+  font-size: 0.8em;
   visibility: hidden;
 }
 
@@ -260,7 +280,7 @@ h6 {
   z-index: -10;
 }
 
-.top10Card {
+#top10Card {
   position: fixed;
   width: 100vw;
   top: 0;
@@ -286,11 +306,15 @@ h6 {
   margin: 0;
   padding: 3px;
   color: white;
+  display: block;
 }
 
 .gameInfo p {
   margin-left: 6px;
-  float: left;
+  margin-bottom: 2px;
+  font-family: 'Indie Flower', cursive;
+  font-weight: bold;
+  font-size: medium;
 }
 
 .button {
@@ -310,6 +334,7 @@ h6 {
 #rndPatternButton:hover {
   background-color: orange;
   cursor: pointer;
+  box-shadow: 7px 7px black;
 }
 
 #db {
@@ -325,6 +350,7 @@ h6 {
 #db:hover {
   background-color: lightblue;
   cursor: pointer;
+  box-shadow: 7px 7px black;
 }
 
 .settingsCard p {
@@ -335,4 +361,20 @@ h6 {
 .smallText {
   padding-top: 30px;
   font-size: .5em;
+}
+
+.loadingScreen {
+  width: 100vw;
+  height: 100vh;
+  background-color: #43464c;
+  position: relative;
+  top: 0;
+  left: 0;
+  display: flex;
+  z-index: 120;
+}
+
+.loadingScreen p {
+  margin: auto;
+  color: white;
 }
