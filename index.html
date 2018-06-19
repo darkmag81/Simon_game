@@ -20,7 +20,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="heading">
-                    <h3><span class="t1">Simon</span><span class="t2">The Game</span></h3>
+                    <h3><span id="topLink" class="t1">Simon</span><span class="t2">The Game</span></h3>
                     <h6>Watch, Remember, Repeat!</h6>
                 </div>
             </div>
@@ -34,6 +34,9 @@
                     <p>Random: <span id="rndPattern">No</span></p>
                     <p>Round: <span id="roundCounter">--</span></p>
                     <p>Score: <span id="score">--</span></p>
+                    <p>Best Run:</p>
+                    <p><span id="highScore">Not played...</span></p>
+                    <p><span id="highScoreB"></span></p>
                     
                 </div>
                 <div class="main">
@@ -56,42 +59,20 @@
             </div>
         </div>
     </section>
-    <div class="bottom-panel">
-        <p>Current move pattern: <span id="move">none</span></p><br>
-    </div>
+    
     <div id="settingsButton" class="settings">
         <p><i class="fas fa-cog"></i></p>
     </div>
-    <div id="soundButton">
-        <p><i id="nosound" class="fas fa-times"></i></p>
-        <p><i class="fas fa-volume-up"></i></p>
-    </div>
-    <div id="top10Button" class="top10">
-        <p><i class="fas fa-trophy"></i></p>
+    <div id="soundButton" class="soundBut">
+        <p id="soundIcon"><i class="fas fa-volume-off"></i></p>
     </div>
     <div id="fullscreenButton" onclick="goFullScreen()" class="fullscreen">
         <p><i class="fas fa-expand-arrows-alt"></i></p>
     </div>
     <div id="sc" class="settingsCard">
         <div id="db" class="button" onclick="diff()">Change Difficulity</div>
-        <p class="settingsLabel">Settings:</p><br>
+        <p id="settingsLabel">Settings:</p><br>
         <div id="rndPatternButton" class="button" onclick="randomPattern()">Random Pattern</div>
-    </div>
-    <div id="top10Card">
-        <div class="scoreTable">
-            <p><h3>Hall of Fame</h3></p>
-            <p>1.Me....(Hard)......21</p>
-            <p>2.Me....(Hard)......20</p>
-            <p>3.Me....(Hard)......18</p>
-            <p>4.Me....(Hard)......16</p>
-            <p>5.Me....(Hard)......15</p>
-            <p>6.Me....(Hard)......11</p>
-            <p>7.Me....(Hard).......9</p>
-            <p>8.Me....(Hard).......7</p>
-            <p>9.Me....(Hard).......6</p>
-            <p>10.Me....(Hard)......5</p>
-            <p class="smallText">Click anywhere to close high score table</p>
-        </div>
     </div>
     <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="script.js"></script>
