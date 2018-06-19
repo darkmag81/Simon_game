@@ -5,6 +5,7 @@ var game = {
     count: 0,
     score: 0,
     state: 0,
+    rndPattern: false,
 };
 var aud = {
     sound: {
@@ -31,7 +32,6 @@ var dif = 4;
 var del = 3000;
 var sound = false;
 var endG = false;
-var rndPattern = false;
 var inGameDelay = 3000;
 
 $(document).ready(function() {
@@ -47,12 +47,12 @@ $(document).ready(function() {
 
 function randomPattern() {
     playSound("click");
-    if (!rndPattern) {
-        rndPattern = true;
+    if (!game.rndPattern) {
+        game.rndPattern = true;
         $("#rndPattern").text("Yes");
     }
-    else if (rndPattern) {
-        rndPattern = false;
+    else if (game.rndPattern) {
+        game.rndPattern = false;
         $("#rndPattern").text("No");
     }
 } // Toggle game option for random Pattern, update display
@@ -94,7 +94,7 @@ function checkIfRecord() {
     if (game.score > record.score) {
         quick("!!! NEW RECORD !!!",2000);
         record.difficulty = game.difficulty;
-        record.random = rndPattern;
+        record.random = game.rndPattern;
         record.round = game.count;
         record.score = game.score;
         updateRecord();
@@ -107,7 +107,7 @@ function updateRecord() {
     var recordString = "";
     var secondString = "";
     recordString = record.score + " points on " + record.difficulty + "  (" + record.round + "R)";
-    if (rndPattern) {
+    if (game.rndPattern) {
         secondString = "Random Pattern."   
     } else {
         secondString = "Standard Pattern."
@@ -329,11 +329,11 @@ function addMove(pad) {
 } // Pushing player move into array
 
 function addMoveToPattern() {
-    if (!rndPattern) {
+    if (!game.rndPattern) {
         var rnd = Math.floor(Math.random() * dif) + 1;
         game.move.push("b" + rnd);
     }
-    else if (rndPattern) {
+    else if (game.rndPattern) {
         for (var r = 0; r < game.count; r++) {
             var rnd = Math.floor(Math.random() * dif) + 1;
             game.move[r] = ("b" + rnd);
