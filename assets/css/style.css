@@ -112,9 +112,10 @@ h6 {
   height: 8vw;
   border-radius: 50%;
   margin: 15px;
+  background-color: black;
 }
 
-.menu {
+.middleCircle {
   min-width: 80px;
   min-height: 80px;
   width: 12vw;
@@ -126,9 +127,10 @@ h6 {
   font-size: 2vw;
   display: flex;
   box-shadow: 10px 10px 45px -4px grey;
+  background-color: black;
 }
 
-.menu p {
+.middleCircle p {
   margin: auto;
   text-shadow: 0 0 42px gold;
 }
@@ -195,6 +197,9 @@ h6 {
   border-top-left-radius: 50%;
   transition: all .5s ease-in-out;
   box-shadow: 10px 10px 45px -4px green;
+  border-top: 0;
+  border-bottom: 0;
+  border-right: 0;
 }
 
 
@@ -226,6 +231,9 @@ h6 {
   border-top-left-radius: 50%;
   transition: all .5s ease-in-out;
   box-shadow: 10px 10px 45px -4px red;
+  border-top: 0;
+  border-bottom: 0;
+  border-right: 0;
 }
 
 .fullscreen p {
@@ -254,6 +262,9 @@ h6 {
   border-top-left-radius: 50%;
   transition: all .5s ease-in-out;
   box-shadow: 10px 10px 45px -4px blue;
+  border-top: 0;
+  border-bottom: 0;
+  border-right: 0;
 }
 
 .soundBut p {
@@ -374,10 +385,11 @@ h6 {
 .loadingScreen p {
   margin: auto;
   color: white;
+  font-size: 6vw;
 }
 
 @media(max-width:700px) {
-  .menu {
+  .middleCircle {
     min-width: 80px;
     min-height: 80px;
     width: 12vw;

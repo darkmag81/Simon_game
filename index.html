@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css" type="text/css" />
+    <script type="text/javascript" src="assets/js/underscore.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Caveat|Nanum+Brush+Script|Permanent+Marker|Indie+Flower" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <script src="assets/js/jquery-3.3.1.js"></script>
@@ -14,8 +15,12 @@
 </head>
 
 <body>
-    <div class="loadingScreen"><p>Loading. Please wait...</p></div>
-    <div id="quickBar"><p>Well Done!!!</p></div>
+    <div class="loadingScreen">
+        <p>Loading. Please wait...</p>
+    </div>
+    <div id="quickBar">
+        <p>Well Done!!!</p>
+    </div>
     <header>
         <div class="container-fluid">
             <div class="row">
@@ -37,42 +42,42 @@
                     <p>Best Run:</p>
                     <p><span id="highScore">Not played...</span></p>
                     <p><span id="highScoreB"></span></p>
-                    
+
                 </div>
                 <div class="main">
                     <div class="top-row">
-                        <div id="b1" class="pad red"></div>
-                        <div id="b5" class="pad blue"></div>
+                        <button onfocus="blur()" id="b1" class="pad red"></button>
+                        <button onfocus="blur()" id="b5" class="pad blue"></button>
                     </div>
                     <div class="middle-row">
-                        <div id="b4" class="pad green"></div>
-                        <div id="menu" class="menu active">
-                            <p><i class="fas fa-play"></i></p>
-                        </div>
-                        <div id="b2" class="pad yellow"></div>
+                        <button onfocus="blur()" id="b4" class="pad green"></button>
+                        <button onfocus="blur()" id="middleCircle" class="middleCircle active">
+                            <p id="display"><i class="fas fa-play"></i></p>
+                        </button>
+                        <button onfocus="blur()" id="b2" class="pad yellow"></button>
                     </div>
                     <div class="bottom-row">
-                        <div id="b3" class="pad white"></div>
-                        <div id="b6" class="pad purple"></div>
+                        <button onfocus="blur()" id="b3" class="pad white"></button>
+                        <button onfocus="blur()" id="b6" class="pad purple"></button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    
-    <div id="settingsButton" class="settings">
+
+    <button onfocus="blur()" id="settingsButton" class="settings">
         <p><i class="fas fa-cog"></i></p>
-    </div>
-    <div id="soundButton" class="soundBut">
+    </button>
+    <button onfocus="blur()" id="soundButton" class="soundBut">
         <p id="soundIcon"><i class="fas fa-volume-off"></i></p>
-    </div>
-    <div id="fullscreenButton" onclick="goFullScreen()" class="fullscreen">
+    </button>
+    <button onfocus="blur()" id="fullscreenButton" onclick="goFullScreen()" class="fullscreen">
         <p><i class="fas fa-expand-arrows-alt"></i></p>
-    </div>
-    <div id="sc" class="settingsCard">
-        <div id="db" class="button" onclick="diff()">Change Difficulity</div>
+    </button>
+    <div id="settingsCard" class="settingsCard">
+        <button onfocus="blur()" id="db" class="button" onclick="diff()">Change Difficulity</button>
         <p id="settingsLabel">Settings:</p><br>
-        <div id="rndPatternButton" class="button" onclick="randomPattern()">Random Pattern</div>
+        <button onfocus="blur()" id="rndPatternButton" class="button" onclick="randomPattern()">Random Pattern</button>
     </div>
     <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="script.js"></script>

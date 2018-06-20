@@ -6,6 +6,12 @@ var game = {
     score: 0,
     state: 0,
     rndPattern: false,
+    settingsCard: false,
+    dif: 4,
+    del: 3000,
+    sound: false,
+    endG: false,
+    inGameDelay: 3000,
 };
 var aud = {
     sound: {
@@ -27,78 +33,91 @@ var record = {
     round: 1,
     score: 0
 };
-var settingsCard = false;
-var dif = 4;
-var del = 3000;
-var sound = false;
-var endG = false;
-var inGameDelay = 3000;
+
+var randomPatternLabel = document.getElementById("rndPattern");
+var settingsCard = $("#sc");
+var middleCircle = $("#middleCircle");
+var display = $("#middleCircle p");
+var settingsCard = $("#settingsCard");
+var settingsButton = $("#settingsButton");
+var soundButton = $("#soundButton");
+var topLink = $("#topLink");
+var loadingScreen = $(".loadingScreen");
+var difficultyLabel = $("#diffic");
+var b1 = $("#b1");
+var b2 = $("#b2");
+var b3 = $("#b3");
+var b4 = $("#b4");
+var b5 = $("#b5");
+var b6 = $("#b6");
+
 
 $(document).ready(function() {
-    $(".loadingScreen").css("display", "none");
-    $("#menu").on("click", function() { start() });
-    $("#settingsButton").on("click", function() { settings() });
-    $("#soundButton").on("click", function() { soundToggle() });
-    $("#topLink").on("click", function() {
+
+    loadingScreen.css("display", "none");
+    middleCircle.on("click", function() { start() });
+    settingsButton.on("click", function() { settings() });
+    soundButton.on("click", function() { soundToggle() });
+    topLink.on("click", function() {
         var win = window.open("https://en.wikipedia.org/wiki/Simon_(game)", '_blank');
         win.focus();
-    })
+    });
 });
 
 function randomPattern() {
     playSound("click");
     if (!game.rndPattern) {
         game.rndPattern = true;
-        $("#rndPattern").text("Yes");
+        randomPatternLabel.innerHTML = "Yes";
     }
     else if (game.rndPattern) {
         game.rndPattern = false;
-        $("#rndPattern").text("No");
+        randomPatternLabel.innerHTML = "No";
     }
 } // Toggle game option for random Pattern, update display
 
 function soundToggle() {
     var icon = document.getElementById('soundIcon');
-    if (!sound) {
+    if (!game.sound) {
         icon.innerHTML = '<i class="fas fa-volume-up"></i>';
-        sound = true;
+        game.sound = true;
         icon.style.paddingRight = "0";
     }
-    else if (sound) {
+    else if (game.sound) {
         icon.innerHTML = '<i class="fas fa-volume-off"></i>';
-        sound = false;
+        game.sound = false;
         icon.style.paddingRight = "1.7vw";
     }
 } // Toggle sound on/off - changes icon 
 
 function settings() {
     playSound("click");
-    if (settingsCard == false) {
-        $("#sc").animate({ opacity: 1 }, 500);
-        $("#sc").css("z-index", "10");
-        settingsCard = true;
+    if (!game.settingsCard) {
+        settingsCard.animate({ opacity: 1 }, 500);
+        settingsCard.css("z-index", "10");
+        game.settingsCard = true;
     }
-    else if (settingsCard == true) {
-        $("#sc").animate({ opacity: 0 }, 500);
+    else if (game.settingsCard) {
+        settingsCard.animate({ opacity: 0 }, 500);
         setTimeout(function() {
-            $("#sc").css("z-index", "-10");
-            $("#menu").off("click");
-            $("#menu").on("click", function() { start() });
+            settingsCard.css("z-index", "-10");
+            middleCircle.on("click", function() { start() });
         }, 500);
-        settingsCard = false;
+        game.settingsCard = false;
     }
 
 } // Toggle Settings menu opacity 1/0 
 
 function checkIfRecord() {
     if (game.score > record.score) {
-        quick("!!! NEW RECORD !!!",2000);
+        quick("!!! NEW RECORD !!!", 2000);
         record.difficulty = game.difficulty;
         record.random = game.rndPattern;
         record.round = game.count;
         record.score = game.score;
         updateRecord();
-    } else {
+    }
+    else {
         quick("No Record This time...", 1000);
     }
 } // Check if current score is higher than best run score
@@ -108,35 +127,34 @@ function updateRecord() {
     var secondString = "";
     recordString = record.score + " points on " + record.difficulty + "  (" + record.round + "R)";
     if (game.rndPattern) {
-        secondString = "Random Pattern."   
-    } else {
-        secondString = "Standard Pattern."
+        secondString = "Random Pattern.";
     }
-     
-    
-    
+    else {
+        secondString = "Standard Pattern.";
+    }
+
     document.getElementById("highScore").innerHTML = recordString;
     document.getElementById("highScoreB").innerHTML = secondString;
 } // Update Record on display
 
 function flash(pad, color) {
     if (pad == "b1") {
-        $("#b1").css("background-color", color);
+        b1.css("background-color", color);
     }
     else if (pad == "b2") {
-        $("#b2").css("background-color", color);
+        b2.css("background-color", color);
     }
     else if (pad == "b3") {
-        $("#b3").css("background-color", color);
+        b3.css("background-color", color);
     }
     else if (pad == "b4") {
-        $("#b4").css("background-color", color);
+        b4.css("background-color", color);
     }
     else if (pad == "b5") {
-        $("#b5").css("background-color", color);
+        b5.css("background-color", color);
     }
     else if (pad == "b6") {
-        $("#b6").css("background-color", color);
+        b6.css("background-color", color);
     }
     else {
         console.log("flash function failed...");
@@ -154,68 +172,68 @@ function isTouchDevice() {
 
 function hoverEffectsOn() {
     function b1hoverin() {
-        $("#b1").css("border", "20px solid red");
+        b1.css("border", "20px solid red");
     }
 
     function b1hoverout() {
-        $("#b1").css("border", "3px solid red");
+        b1.css("border", "3px solid red");
     }
 
     function b2hoverin() {
-        $("#b2").css("border", "20px solid yellow");
+        b2.css("border", "20px solid yellow");
     }
 
     function b2hoverout() {
-        $("#b2").css("border", "3px solid yellow");
+        b2.css("border", "3px solid yellow");
     }
 
     function b3hoverin() {
-        $("#b3").css("border", "20px solid white");
+        b3.css("border", "20px solid white");
     }
 
     function b3hoverout() {
-        $("#b3").css("border", "3px solid white");
+        b3.css("border", "3px solid white");
     }
 
     function b4hoverin() {
-        $("#b4").css("border", "20px solid green");
+        b4.css("border", "20px solid green");
     }
 
     function b4hoverout() {
-        $("#b4").css("border", "3px solid green");
+        b4.css("border", "3px solid green");
     }
 
     function b5hoverin() {
-        $("#b5").css("border", "20px solid blue");
+        b5.css("border", "20px solid blue");
     }
 
     function b5hoverout() {
-        $("#b5").css("border", "3px solid blue");
+        b5.css("border", "3px solid blue");
     }
 
     function b6hoverin() {
-        $("#b6").css("border", "20px solid purple");
+        b6.css("border", "20px solid purple");
     }
 
     function b6hoverout() {
-        $("#b6").css("border", "3px solid purple");
+        b6.css("border", "3px solid purple");
     }
-    
-    
-    $("#b1").on("mouseenter", flash("b1","red"));
-    $("#b1").on("mouseleave", flash("b1","black"));
-    $("#b1").on("mouseover", b1hoverin);
-    $("#b1").on("mouseout", b1hoverout);
-    $("#b5").on("mouseover", b5hoverin);
-    $("#b5").on("mouseout", b5hoverout);
-    $("#b4").on("mouseover", b4hoverin);
-    $("#b4").on("mouseout", b4hoverout);
-    $("#b6").on("mouseover", b6hoverin);
-    $("#b6").on("mouseout", b6hoverout);
-    $("#b3").on("mouseover", b3hoverin);
-    $("#b3").on("mouseout", b3hoverout);
-    $("#b2").on("mouseover", b2hoverin);
-    $("#b2").on("mouseout", b2hoverout);
+
+
+    b1.on("mouseenter", flash("b1", "red"));
+    b1.on("mouseleave", flash("b1", "black"));
+    b1.on("mouseover", b1hoverin);
+    b1.on("mouseout", b1hoverout);
+    b5.on("mouseover", b5hoverin);
+    b5.on("mouseout", b5hoverout);
+    b4.on("mouseover", b4hoverin);
+    b4.on("mouseout", b4hoverout);
+    b6.on("mouseover", b6hoverin);
+    b6.on("mouseout", b6hoverout);
+    b3.on("mouseover", b3hoverin);
+    b3.on("mouseout", b3hoverout);
+    b2.on("mouseover", b2hoverin);
+    b2.on("mouseout", b2hoverout);
 } // add hover effects to pads
 
 function hoverEffectsOff() {
@@ -253,74 +271,74 @@ function goFullScreen() {
 function diff() {
     playSound("click");
     if (game.difficulty == "hard") {
-        $("#b5").toggle(200);
-        $("#b6").toggle(200);
-        $("#diffic").text("Easy");
+        b5.toggle(200);
+        b6.toggle(200);
+        difficultyLabel.text("Easy");
         game.difficulty = "easy";
     }
     else if (game.difficulty == "easy") {
-        $("#b5").toggle(200);
-        $("#diffic").text("Normal");
+        b5.toggle(200);
+        difficultyLabel.text("Normal");
         game.difficulty = "normal";
     }
     else if (game.difficulty == "normal") {
-        $("#b6").toggle(200);
-        $("#diffic").text("Hard");
+        b6.toggle(200);
+        difficultyLabel.text("Hard");
         game.difficulty = "hard";
     }
 } // toggle difficulty, update screen
 
 function setDif() {
-    if (game.difficulty == "easy") { dif = 4 }
-    else if (game.difficulty == "normal") { dif = 5 }
-    else if (game.difficulty == "hard") { dif = 6 }
+    if (game.difficulty == "easy") { game.dif = 4 }
+    else if (game.difficulty == "normal") { game.dif = 5 }
+    else if (game.difficulty == "hard") { game.dif = 6 }
 } // set Global Difficulity
 
 function deactivatePadHandlers() {
-    $("#b1").off("click");
-    $("#b2").off("click");
-    $("#b3").off("click");
-    $("#b4").off("click");
-    $("#b5").off("click");
-    $("#b6").off("click");
+    b1.off("click");
+    b2.off("click");
+    b3.off("click");
+    b4.off("click");
+    b5.off("click");
+    b6.off("click");
 } // Remove click event from pads
 
 function playSound(snd) {
-    if (sound) { aud.sound[snd].play(); }
+    if (game.sound) { aud.sound[snd].play(); }
 
 } // Play sound if global sound is on
 
 function playerRound() {
     game.player = [];
     setTimeout(function() {
-        $("#b1").on("click", function() {
+        b1.on("click", function() {
             addMove(this.id);
-            playSound(this.id)
+            playSound(this.id);
         });
-        $("#b2").on("click", function() {
+        b2.on("click", function() {
             addMove(this.id);
-            playSound(this.id)
+            playSound(this.id);
         });
-        $("#b3").on("click", function() {
+        b3.on("click", function() {
             addMove(this.id);
-            playSound(this.id)
+            playSound(this.id);
         });
-        $("#b4").on("click", function() {
+        b4.on("click", function() {
             addMove(this.id);
-            playSound(this.id)
+            playSound(this.id);
         });
-        $("#b5").on("click", function() {
+        b5.on("click", function() {
             addMove(this.id);
-            playSound(this.id)
+            playSound(this.id);
         });
-        $("#b6").on("click", function() {
+        b6.on("click", function() {
             addMove(this.id);
-            playSound(this.id)
+            playSound(this.id);
         });
         checkPlayer();
         if (!isTouchDevice()) { hoverEffectsOn() }
-    }, inGameDelay + game.move.length * 1000);
-    $("#menu").removeClass("active");
+    }, game.inGameDelay + game.move.length * 1000);
+    middleCircle.removeClass("active");
 } // Adding click events to pads
 
 function addMove(pad) {
@@ -330,12 +348,12 @@ function addMove(pad) {
 
 function addMoveToPattern() {
     if (!game.rndPattern) {
-        var rnd = Math.floor(Math.random() * dif) + 1;
+        var rnd = Math.floor(Math.random() * game.dif) + 1;
         game.move.push("b" + rnd);
     }
     else if (game.rndPattern) {
         for (var r = 0; r < game.count; r++) {
-            var rnd = Math.floor(Math.random() * dif) + 1;
+            rnd = Math.floor(Math.random() * game.dif) + 1;
             game.move[r] = ("b" + rnd);
         }
     }
@@ -377,37 +395,34 @@ function colorPick(step) {
 } // Color pick !!!!!!!!! to change
 
 function deactivateButtons() {
-    $("#menu").off("click");
-    $("#settingsButton").off("click");
-    $("#settingsButton").css("cursor", "default");
-    $("#settingsButton").animate({ opacity: 0 }, 200);
+    middleCircle.off("click");
+    settingsButton.off("click");
+    settingsButton.css("cursor", "default");
+    settingsButton.animate({ opacity: 0 }, 200);
 } // Remove handlers from buttons
 
 function activateButtons() {
     setTimeout(function() {
-        $("#menu p").html('<i class="fas fa-play"></i>');
-        $("#menu").addClass("active");
-        $("#menu").on("click", function() { start() });
-        $("#settingsButton").on("click", function() { settings() });
-        $("#settingsButton").animate({ opacity: 1 }, 200);
-        $("#settingsButton").css("cursor", "pointer");
-        $("#top10Button").animate({ opacity: 1 }, 200);
-        $("#top10Button").on("click", function() { top10() });
-        $("#top10Button").css("cursor", "pointer");
-    }, del + (game.move.length * 1000) + 200);
+        display.html('<i class="fas fa-play"></i>');
+        middleCircle.addClass("active");
+        middleCircle.on("click", function() { start() });
+        settingsButton.on("click", function() { settings() });
+        settingsButton.animate({ opacity: 1 }, 200);
+        settingsButton.css("cursor", "pointer");
+    }, game.del + (game.move.length * 1000) + 200);
 } // Adding handlers to buttons
 
 function showMoves() {
     updateDisplay();
     deactivatePadHandlers();
-    DisplayCountdown();
+    displayCountdown();
     game.state = 3;
     game.move.forEach(function(element, x) {
         setTimeout(function() {
             flash(element, colorPick(element));
             playSound(element);
-        }, 1000 * x + del);
-        setTimeout(function() { flash(element, "black") }, 1000 * x + 400 + del);
+        }, 1000 * x + game.del);
+        setTimeout(function() { flash(element, "black") }, 1000 * x + 400 + game.del);
     });
     clearPlayer();
     playerRound();
@@ -418,31 +433,31 @@ function clearPlayer() {
 } // Clear player score
 
 function checkIfSettingsOpen() {
-    if (settingsCard == true) {
-        $("#sc").animate({ opacity: 0 }, 500);
+    if (game.settingsCard == true) {
+        settingsCard.animate({ opacity: 0 }, 500);
         setTimeout(function() {
-            $("#sc").css("z-index", "-10");
+            settingsCard.css("z-index", "-10");
         }, 500);
-        settingsCard = false;
+        game.settingsCard = false;
     }
 } // Checking if Settings card is open and visible
 
 function updateDisplay() {
     $("#move").text(game.move);
-    $("#menu").addClass("active");
-    $("#menu p").text("");
+    middleCircle.addClass("active");
+    display.text("");
     $("#roundCounter").text(game.count);
 } // Update display
 
-function DisplayCountdown() {
+function displayCountdown() {
     game.state = 2;
     if (!isTouchDevice()) { hoverEffectsOff() }
-    setTimeout(function() { $("#menu p").text("Watch") }, 100);
-    setTimeout(function() { $("#menu p").text("Remember") }, 600);
-    setTimeout(function() { $("#menu p").text("Repeat") }, 1200);
-    setTimeout(function() { $("#menu p").text("") }, 1800);
-    setTimeout(function() { $("#menu p").text("Round: " + game.count) }, 2000);
-    setTimeout(function() { $("#menu p").text("GO!!!") }, 2500);
+    setTimeout(function() { display.text("Watch") }, 100);
+    setTimeout(function() { display.text("Remember") }, 600);
+    setTimeout(function() { display.text("Repeat") }, 1200);
+    setTimeout(function() { display.text("") }, 1800);
+    setTimeout(function() { display.text("Round: " + game.count) }, 2000);
+    setTimeout(function() { display.text("GO!!!") }, 2500);
 } // setTimeout function for middle menu countdownn
 
 function quick(text, delay) {
@@ -453,13 +468,13 @@ function quick(text, delay) {
 function checkPlayer() {
 
     if ((game.player[game.player.length - 1] == game.move[game.player.length - 1]) && game.player.length > 0) {
-        $("#menu p").text("Good");
-        setTimeout(function() { $("#menu p").text(""); }, 400)
+        display.text("Good");
+        setTimeout(function() { display.text(""); }, 400);
     }
     else if (game.player[game.player.length - 1] !== game.move[game.player.length - 1]) {
-        $("#menu p").text("Game Over");
+        display.text("Game Over");
         checkIfRecord();
-        endG = true;
+        game.endG = true;
         game.count = 0;
         game.state = 4;
         setTimeout(function() {
@@ -471,22 +486,22 @@ function checkPlayer() {
 
         }, 1300);
     }
-    if (!endG) {
+    if (!game.endG) {
         var check = game.player.length === game.move.length;
         if (check) {
             setTimeout(function() {
-                $("#menu p").text("Next Round");
+                display.text("Next Round");
                 nextLevel();
             }, 1300);
         }
     }
-    else if (endG) {
+    else if (game.endG) {
 
     }
 } // Checking player move and chosing how to proced
 
 function updateScore() {
-    game.score += game.move.length * (dif - 3);
+    game.score += game.move.length * (game.dif - 3);
     $("#score").text(game.score);
     switch (game.player.length) {
         case 1:
@@ -528,11 +543,11 @@ function endGame() {
     game.player = [];
     game.count = 0;
     game.state = 4;
-    endG = false;
+    game.endG = false;
     deactivatePadHandlers();
     hoverEffectsOff();
     activateButtons();
-    
+
 } // End game
 
 function start() {
