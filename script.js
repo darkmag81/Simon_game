@@ -1,3 +1,4 @@
+/*----------Game and sounds variables -----------*/
 var game = {
     difficulty: "easy",
     move: [],
@@ -61,7 +62,7 @@ var b6 = $("#b6");
 var highScoreA = $("#highScoreA");
 var highScoreB = $("#highScoreB");
 var highScoreC = $("#highScoreC");
-
+//Preparing game when all page is loaded
 $(document).ready(function() {
     loadingScreen.css("display", "none");
     middleCircle.on("click", function() { start() });
@@ -72,7 +73,7 @@ $(document).ready(function() {
         win.focus();
     });
 });
-
+/*------------ Button Functions -------------------*/
 function randomPatternButtonToggle() {
     playSound("click");
     if (!game.rndPattern) {
@@ -86,7 +87,6 @@ function randomPatternButtonToggle() {
         randomPatternLabel.text("No");
     }
 } // Toggle game option for random Pattern, update display
-
 function soundButtonToggle() {
     var icon = document.getElementById('soundIcon');
     if (!game.sound) {
@@ -100,7 +100,6 @@ function soundButtonToggle() {
         icon.style.paddingRight = "1.7vw";
     }
 } // Toggle sound on/off - changes icon 
-
 function settingsButtonToggle() {
     playSound("click");
     if (!game.settingsCard) {
@@ -118,32 +117,29 @@ function settingsButtonToggle() {
     }
 
 } // Toggle Settings menu opacity 1/0 
-
-function checkIfRecord() {
-    if (game.score > game.record.score) {
-        quick("!!! NEW RECORD !!!", 2000);
-        game.record.difficulty = game.difficulty;
-        game.record.random = game.rndPattern;
-        game.record.round = game.count;
-        game.record.score = game.score;
-        updateRecord();
+function difficultyButtonToggle() {
+    playSound("click");
+    if (game.difficulty == "hard") {
+        b5.toggle(200);
+        b6.toggle(200);
+        difficultyLabel.text("Easy");
+        game.difficulty = "easy";
+        game.dif = 3;
     }
-    else {
-        quick("No Record This time...", 1000);
+    else if (game.difficulty == "easy") {
+        b5.toggle(200);
+        difficultyLabel.text("Normal");
+        game.difficulty = "normal";
+        game.dif = 1;
     }
-} // Check if current score is higher than best run score
-
-function updateRecord() {
-    highScoreA.text(game.record.score + " points on " + game.record.difficulty);
-    highScoreB.text(game.record.round + " Rounds");
-    if (game.rndPattern) {
-        highScoreC.text("Random Pattern.");
+    else if (game.difficulty == "normal") {
+        b6.toggle(200);
+        difficultyLabel.text("Hard");
+        game.difficulty = "hard";
+        game.dif = 2;
     }
-    else {
-        highScoreC.text("Standard Pattern.");
-    }
-} // Update Record on display
-
+} // toggle difficulty, update screen
+/*------------ Special Functions -----------------*/
 function isTouchDevice() {
     if ("ontouchstart" in document.documentElement) {
         return true;
@@ -152,22 +148,6 @@ function isTouchDevice() {
         return false;
     }
 } // check if device is touch
-
-function hoverEffectsOn() {
-    pads.hover(function(){
-        $(this).css("background-color", $(this).css("border-left-color"));
-    }, function() {
-        pads.css("background-color", "black");
-    })
-    
-    
-} // add hover effects to pads
-
-function hoverEffectsOff() {
-    pads.off("mouseenter");
-    pads.off("mouseleave");
-} // remove mouse effects over pads
-
 function goFullScreen() {
     playSound("click");
     if ((document.fullScreenElement && document.fullScreenElement !== null) ||
@@ -194,121 +174,19 @@ function goFullScreen() {
         }
     }
 } // toggle full-screen 
-
-function difficultyButtonToggle() {
-    playSound("click");
-    if (game.difficulty == "hard") {
-        b5.toggle(200);
-        b6.toggle(200);
-        difficultyLabel.text("Easy");
-        game.difficulty = "easy";
-        game.dif = 3;
-    }
-    else if (game.difficulty == "easy") {
-        b5.toggle(200);
-        difficultyLabel.text("Normal");
-        game.difficulty = "normal";
-        game.dif = 1;
-    }
-    else if (game.difficulty == "normal") {
-        b6.toggle(200);
-        difficultyLabel.text("Hard");
-        game.difficulty = "hard";
-        game.dif = 2;
-    }
-} // toggle difficulty, update screen
-
-function deactivatePadHandlers() {
-    pads.off("click").off("mouseover").off("mouseenter");
-} // Remove click event from pads
-
 function playSound(snd) {
     if (game.sound) { aud.sound[snd].play(); }
 
 } // Play sound if global sound is on
-
-function addMove(pad) {
-    game.player.push(pad);
-    checkPlayer();
-} // Pushing player move into array
-
-function settingsButtonHide() {
-
-    settingsButton.off("click");
-    settingsButton.css("cursor", "default");
-    settingsButton.animate({ opacity: 0 }, 200);
-    game.settingsButton = false;
-} // Hide setting Button
-
-function settingsButtonShow() {
-    settingsButton.on("click", function() { settingsButtonToggle() });
-    settingsButton.css("cursor", "pointer");
-    settingsButton.animate({ opacity: 1 }, 200);
-    game.settingsButton = true;
-} // Show setting Button
-
-function activateMiddleButton() {
-    setTimeout(function() {
-        display.html('<i class="fas fa-play"></i>');
-        middleCircle.addClass("active");
-        middleCircle.on("click", function() { start() });
-    }, game.del + (game.move.length * 1000) + 200);
-} // Activate middle button hover and event
-
-function deactivateMiddleButton() {
-    display.html("");
-    middleCircle.removeClass("active");
-    middleCircle.off("click");
-} // Deactivate middle button hover and event
-
-function updateDisplay() {
-    middleCircle.addClass("active");
-    display.text("");
-    roundCounter.text(game.count);
-} // Update display
-
-function displayTextInMiddleButton(text, delay) {
-    setTimeout(function() { display.text(text) }, delay);
-} // Displays 'text' in middle button for 'delay' miliseconds
-
-function displayCountdown() {
-    game.state = 2;
-    if (!isTouchDevice()) { hoverEffectsOff() }
-    displayTextInMiddleButton("Watch", 100);
-    displayTextInMiddleButton("Remember", 600);
-    displayTextInMiddleButton("Repeat", 1100);
-    displayTextInMiddleButton("", 1600);
-    displayTextInMiddleButton("Round: " + game.count, 2000);
-    displayTextInMiddleButton("", 2800);
-    displayTextInMiddleButton("GO!!!", game.showMovesDelay);
-} // setTimeout function for middle menu countdownn
-
 function quick(text, delay) {
     quickParagraph.text(text);
     quickCard.animate({ top: "0" }, 300).delay(delay).animate({ top: "-16vw" }, 200);
 } // Shows 'text' in sliding bar for 'delay' ms
-
-function updateScore() {
-    game.score += game.move.length * (game.dif + game.random);
-    scoreLabel.text(game.score);
-    switch (game.player.length) {
-        case 1:
-            quick("Good Start", 300);
-            break;
-        case 3:
-            quick("Keep going", 300);
-            break;
-        case 5:
-            quick("Well Done", 300);
-            break;
-    }
-} // Update score. Extra quick bar comments on special move count
-
+/*------------------ Game functions ---------------*/
 function start() {
     playSound("advance");
     prepareNewGame();
 } // Start button clicked
-
 function prepareNewGame() {
     game.showMovesDelay = 4000;
     game.move = [];
@@ -318,14 +196,12 @@ function prepareNewGame() {
     settingsButtonHide();
     addCount();
 } // Clearing game variables
-
 function addCount() {
     game.count++;
     deactivateMiddleButton();
     if (game.settingsCard) settingsButtonToggle();
     addMoveToPattern();
 } // Add round
-
 function addMoveToPattern() {
     if (!game.rndPattern) {
         var rnd = Math.floor(Math.random() * game.dif) + 1;
@@ -339,7 +215,6 @@ function addMoveToPattern() {
     }
     showMoves();
 } // Adding move to pattern or creating new pattern for n moves
-
 function showMoves() {
     updateDisplay();
     deactivatePadHandlers();
@@ -354,25 +229,23 @@ function showMoves() {
     game.player = [];
     playerRound();
 } // setTimeout function for showing move pattern to player
-
 function flash(pad) {
     var chosenPad = $("#" + pad);
     var padColor = chosenPad.css("border-left-color");
     chosenPad.animate({backgroundColor: padColor},200).delay(200).animate({backgroundColor: "black"},200);
 } // changes pad background color for border color, after delay of 200ms reverse to black backgound;
-
 function playerRound() {
     setTimeout(function() {
         pads.on("click", function() {
-            addMove(this.id);
+            game.player.push(this.id);
             playSound(this.id);
+            checkPlayer();
         });
         checkPlayer();
         if (!isTouchDevice()) { hoverEffectsOn() }
     }, game.inGameDelay + game.move.length * 1000);
     middleCircle.removeClass("active");
 } // Adding click events to pads
-
 function checkPlayer() {
 
     if ((game.player[game.player.length - 1] == game.move[game.player.length - 1]) && game.player.length > 0) {
@@ -407,13 +280,11 @@ function checkPlayer() {
        
     }
 } // Checking player move and chosing how to proced
-
 function nextLevel() {
     game.showMovesDelay += 1000;
     updateScore();
     addCount();
 } // Next round
-
 function endGame() {
     game.move = [];
     game.player = [];
@@ -427,3 +298,102 @@ function endGame() {
     hoverEffectsOff();
     activateMiddleButton();
 } // End game
+function checkIfRecord() {
+    if (game.score > game.record.score) {
+        quick("!!! NEW RECORD !!!", 2000);
+        game.record.difficulty = game.difficulty;
+        game.record.random = game.rndPattern;
+        game.record.round = game.count;
+        game.record.score = game.score;
+        updateRecord();
+    }
+    else {
+        quick("No Record This time...", 1000);
+    }
+} // Check if current score is higher than best run score
+function updateRecord() {
+    highScoreA.text(game.record.score + " points on " + game.record.difficulty);
+    highScoreB.text(game.record.round + " Rounds");
+    if (game.rndPattern) {
+        highScoreC.text("Random Pattern.");
+    }
+    else {
+        highScoreC.text("Standard Pattern.");
+    }
+} // Update Record on display
+function updateScore() {
+    game.score += game.move.length * (game.dif + game.random);
+    scoreLabel.text(game.score);
+    switch (game.player.length) {
+        case 1:
+            quick("Good Start", 300);
+            break;
+        case 3:
+            quick("Keep going", 300);
+            break;
+        case 5:
+            quick("Well Done", 300);
+            break;
+    }
+} // Update score. Extra quick bar comments on special move count
+function updateDisplay() {
+    middleCircle.addClass("active");
+    display.text("");
+    roundCounter.text(game.count);
+} // Update display
+function displayTextInMiddleButton(text, delay) {
+    setTimeout(function() { display.text(text) }, delay);
+} // Displays 'text' in middle button for 'delay' miliseconds
+function displayCountdown() {
+    game.state = 2;
+    if (!isTouchDevice()) { hoverEffectsOff() }
+    displayTextInMiddleButton("Watch", 100);
+    displayTextInMiddleButton("Remember", 600);
+    displayTextInMiddleButton("Repeat", 1100);
+    displayTextInMiddleButton("", 1600);
+    displayTextInMiddleButton("Round: " + game.count, 2000);
+    displayTextInMiddleButton("", 2800);
+    displayTextInMiddleButton("GO!!!", game.showMovesDelay);
+} // setTimeout function for middle menu countdownn
+/*--------------Buttons Control-----------------------*/
+function hoverEffectsOn() {
+    pads.hover(function(){
+        $(this).css("background-color", $(this).css("border-left-color"));
+    }, function() {
+        pads.css("background-color", "black");
+    })
+    
+    
+} // add hover effects to pads
+function hoverEffectsOff() {
+    pads.off("mouseenter");
+    pads.off("mouseleave");
+} // remove mouse effects over pads
+function deactivatePadHandlers() {
+    pads.off("click").off("mouseover").off("mouseenter");
+} // Remove click event from pads
+function settingsButtonHide() {
+
+    settingsButton.off("click");
+    settingsButton.css("cursor", "default");
+    settingsButton.animate({ opacity: 0 }, 200);
+    game.settingsButton = false;
+} // Hide setting Button
+function settingsButtonShow() {
+    settingsButton.on("click", function() { settingsButtonToggle() });
+    settingsButton.css("cursor", "pointer");
+    settingsButton.animate({ opacity: 1 }, 200);
+    game.settingsButton = true;
+} // Show setting Button
+function activateMiddleButton() {
+    setTimeout(function() {
+        display.html('<i class="fas fa-play"></i>');
+        middleCircle.addClass("active");
+        middleCircle.on("click", function() { start() });
+    }, game.del + (game.move.length * 1000) + 200);
+} // Activate middle button hover and event
+function deactivateMiddleButton() {
+    display.html("");
+    middleCircle.removeClass("active");
+    middleCircle.off("click");
+} // Deactivate middle button hover and event
