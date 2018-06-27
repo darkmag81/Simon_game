@@ -10,7 +10,7 @@ var game = {
     random: 0,
     settingsCard: false,
     settingsButton: true,
-    dif: 1,
+    dif: 4,
     del: 3000,
     sound: false,
     endG: false,
@@ -124,19 +124,19 @@ function difficultyButtonToggle() {
         b6.toggle(200);
         difficultyLabel.text("Easy");
         game.difficulty = "easy";
-        game.dif = 3;
+        game.dif = 4;
     }
     else if (game.difficulty == "easy") {
         b5.toggle(200);
         difficultyLabel.text("Normal");
         game.difficulty = "normal";
-        game.dif = 1;
+        game.dif = 5;
     }
     else if (game.difficulty == "normal") {
         b6.toggle(200);
         difficultyLabel.text("Hard");
         game.difficulty = "hard";
-        game.dif = 2;
+        game.dif = 6;
     }
 } // toggle difficulty, update screen
 /*------------ Special Functions -----------------*/
@@ -322,7 +322,7 @@ function updateRecord() {
     }
 } // Update Record on display
 function updateScore() {
-    game.score += game.move.length * (game.dif + game.random);
+    game.score += game.move.length * (game.dif + game.random - 3);
     scoreLabel.text(game.score);
     switch (game.player.length) {
         case 1:
