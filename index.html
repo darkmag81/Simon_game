@@ -11,6 +11,8 @@
     <link href="https://fonts.googleapis.com/css?family=Caveat|Nanum+Brush+Script|Permanent+Marker|Indie+Flower" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <script src="assets/js/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <title>Simon Game</title>
 </head>
 
@@ -40,8 +42,9 @@
                     <p>Round: <span id="roundCounter">--</span></p>
                     <p>Score: <span id="score">--</span></p>
                     <p>Best Run:</p>
-                    <p><span id="highScore">Not played...</span></p>
+                    <p><span id="highScoreA">Not played...</span></p>
                     <p><span id="highScoreB"></span></p>
+                    <p><span id="highScoreC"></span></p>
 
                 </div>
                 <div class="main">
@@ -75,9 +78,9 @@
         <p><i class="fas fa-expand-arrows-alt"></i></p>
     </button>
     <div id="settingsCard" class="settingsCard">
-        <button onfocus="blur()" id="db" class="button" onclick="diff()">Change Difficulity</button>
+        <button onfocus="blur()" id="db" class="button" onclick="difficultyButtonToggle()">Change Difficulity</button>
         <p id="settingsLabel">Settings:</p><br>
-        <button onfocus="blur()" id="rndPatternButton" class="button" onclick="randomPattern()">Random Pattern</button>
+        <button onfocus="blur()" id="rndPatternButton" class="button" onclick="randomPatternButtonToggle()">Random Pattern</button>
     </div>
     <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="script.js"></script>

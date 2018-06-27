@@ -6,13 +6,22 @@ var game = {
     score: 0,
     state: 0,
     rndPattern: false,
+    random: 0,
     settingsCard: false,
-    dif: 4,
+    settingsButton: true,
+    dif: 1,
     del: 3000,
     sound: false,
     endG: false,
     inGameDelay: 3000,
-};
+    showMovesDelay: 4000,
+    record: {
+        difficulty: "easy",
+        random: false,
+        round: 1,
+        score: 0
+    } // top score variable
+}; // game variable
 var aud = {
     sound: {
         b1: new Audio('assets/sound/sound1.wav'),
@@ -26,15 +35,9 @@ var aud = {
         advance: new Audio('assets/sound/advance.wav'),
         win: new Audio('assets/sound/win.wav')
     },
-};
-var record = {
-    difficulty: "easy",
-    random: false,
-    round: 1,
-    score: 0
-};
-
-var randomPatternLabel = document.getElementById("rndPattern");
+}; // sound variable
+/*------------- DOM Elements ---------------*/
+var randomPatternLabel = $("#rndPattern");
 var settingsCard = $("#sc");
 var middleCircle = $("#middleCircle");
 var display = $("#middleCircle p");
@@ -44,39 +47,47 @@ var soundButton = $("#soundButton");
 var topLink = $("#topLink");
 var loadingScreen = $(".loadingScreen");
 var difficultyLabel = $("#diffic");
+var scoreLabel = $("#score");
+var quickParagraph = $("#quickBar p");
+var quickCard = $("#quickBar");
+var roundCounter = $("#roundCounter");
+var pads = $(".pad");
 var b1 = $("#b1");
 var b2 = $("#b2");
 var b3 = $("#b3");
 var b4 = $("#b4");
 var b5 = $("#b5");
 var b6 = $("#b6");
-
+var highScoreA = $("#highScoreA");
+var highScoreB = $("#highScoreB");
+var highScoreC = $("#highScoreC");
 
 $(document).ready(function() {
-
     loadingScreen.css("display", "none");
     middleCircle.on("click", function() { start() });
-    settingsButton.on("click", function() { settings() });
-    soundButton.on("click", function() { soundToggle() });
+    settingsButton.on("click", function() { settingsButtonToggle() });
+    soundButton.on("click", function() { soundButtonToggle() });
     topLink.on("click", function() {
         var win = window.open("https://en.wikipedia.org/wiki/Simon_(game)", '_blank');
         win.focus();
     });
 });
 
-function randomPattern() {
+function randomPatternButtonToggle() {
     playSound("click");
     if (!game.rndPattern) {
         game.rndPattern = true;
-        randomPatternLabel.innerHTML = "Yes";
+        game.random = 2;
+        randomPatternLabel.text("Yes");
     }
     else if (game.rndPattern) {
         game.rndPattern = false;
-        randomPatternLabel.innerHTML = "No";
+        game.random = 0;
+        randomPatternLabel.text("No");
     }
 } // Toggle game option for random Pattern, update display
 
-function soundToggle() {
+function soundButtonToggle() {
     var icon = document.getElementById('soundIcon');
     if (!game.sound) {
         icon.innerHTML = '<i class="fas fa-volume-up"></i>';
@@ -90,7 +101,7 @@ function soundToggle() {
     }
 } // Toggle sound on/off - changes icon 
 
-function settings() {
+function settingsButtonToggle() {
     playSound("click");
     if (!game.settingsCard) {
         settingsCard.animate({ opacity: 1 }, 500);
@@ -109,12 +120,12 @@ function settings() {
 } // Toggle Settings menu opacity 1/0 
 
 function checkIfRecord() {
-    if (game.score > record.score) {
+    if (game.score > game.record.score) {
         quick("!!! NEW RECORD !!!", 2000);
-        record.difficulty = game.difficulty;
-        record.random = game.rndPattern;
-        record.round = game.count;
-        record.score = game.score;
+        game.record.difficulty = game.difficulty;
+        game.record.random = game.rndPattern;
+        game.record.round = game.count;
+        game.record.score = game.score;
         updateRecord();
     }
     else {
@@ -123,43 +134,15 @@ function checkIfRecord() {
 } // Check if current score is higher than best run score
 
 function updateRecord() {
-    var recordString = "";
-    var secondString = "";
-    recordString = record.score + " points on " + record.difficulty + "  (" + record.round + "R)";
+    highScoreA.text(game.record.score + " points on " + game.record.difficulty);
+    highScoreB.text(game.record.round + " Rounds");
     if (game.rndPattern) {
-        secondString = "Random Pattern.";
+        highScoreC.text("Random Pattern.");
     }
     else {
-        secondString = "Standard Pattern.";
+        highScoreC.text("Standard Pattern.");
     }
-
-    document.getElementById("highScore").innerHTML = recordString;
-    document.getElementById("highScoreB").innerHTML = secondString;
 } // Update Record on display
-
-function flash(pad, color) {
-    if (pad == "b1") {
-        b1.css("background-color", color);
-    }
-    else if (pad == "b2") {
-        b2.css("background-color", color);
-    }
-    else if (pad == "b3") {
-        b3.css("background-color", color);
-    }
-    else if (pad == "b4") {
-        b4.css("background-color", color);
-    }
-    else if (pad == "b5") {
-        b5.css("background-color", color);
-    }
-    else if (pad == "b6") {
-        b6.css("background-color", color);
-    }
-    else {
-        console.log("flash function failed...");
-    }
-} // changes pad background color to different color !!!!!!!!!!!!!! to change 
 
 function isTouchDevice() {
     if ("ontouchstart" in document.documentElement) {
@@ -171,74 +154,18 @@ function isTouchDevice() {
 } // check if device is touch
 
 function hoverEffectsOn() {
-    function b1hoverin() {
-        b1.css("border", "20px solid red");
-    }
-
-    function b1hoverout() {
-        b1.css("border", "3px solid red");
-    }
-
-    function b2hoverin() {
-        b2.css("border", "20px solid yellow");
-    }
-
-    function b2hoverout() {
-        b2.css("border", "3px solid yellow");
-    }
-
-    function b3hoverin() {
-        b3.css("border", "20px solid white");
-    }
-
-    function b3hoverout() {
-        b3.css("border", "3px solid white");
-    }
-
-    function b4hoverin() {
-        b4.css("border", "20px solid green");
-    }
-
-    function b4hoverout() {
-        b4.css("border", "3px solid green");
-    }
-
-    function b5hoverin() {
-        b5.css("border", "20px solid blue");
-    }
-
-    function b5hoverout() {
-        b5.css("border", "3px solid blue");
-    }
-
-    function b6hoverin() {
-        b6.css("border", "20px solid purple");
-    }
-
-    function b6hoverout() {
-        b6.css("border", "3px solid purple");
-    }
-
-
-    b1.on("mouseenter", flash("b1", "red"));
-    b1.on("mouseleave", flash("b1", "black"));
-    b1.on("mouseover", b1hoverin);
-    b1.on("mouseout", b1hoverout);
-    b5.on("mouseover", b5hoverin);
-    b5.on("mouseout", b5hoverout);
-    b4.on("mouseover", b4hoverin);
-    b4.on("mouseout", b4hoverout);
-    b6.on("mouseover", b6hoverin);
-    b6.on("mouseout", b6hoverout);
-    b3.on("mouseover", b3hoverin);
-    b3.on("mouseout", b3hoverout);
-    b2.on("mouseover", b2hoverin);
-    b2.on("mouseout", b2hoverout);
+    pads.hover(function(){
+        $(this).css("background-color", $(this).css("border-left-color"));
+    }, function() {
+        pads.css("background-color", "black");
+    })
+    
+    
 } // add hover effects to pads
 
 function hoverEffectsOff() {
-    $(".pad").off("mouseenter");
-    $(".pad").off("mouseleave");
+    pads.off("mouseenter");
+    pads.off("mouseleave");
 } // remove mouse effects over pads
 
 function goFullScreen() {
@@ -268,39 +195,31 @@ function goFullScreen() {
     }
 } // toggle full-screen 
 
-function diff() {
+function difficultyButtonToggle() {
     playSound("click");
     if (game.difficulty == "hard") {
         b5.toggle(200);
         b6.toggle(200);
         difficultyLabel.text("Easy");
         game.difficulty = "easy";
+        game.dif = 3;
     }
     else if (game.difficulty == "easy") {
         b5.toggle(200);
         difficultyLabel.text("Normal");
         game.difficulty = "normal";
+        game.dif = 1;
     }
     else if (game.difficulty == "normal") {
         b6.toggle(200);
         difficultyLabel.text("Hard");
         game.difficulty = "hard";
+        game.dif = 2;
     }
 } // toggle difficulty, update screen
 
-function setDif() {
-    if (game.difficulty == "easy") { game.dif = 4 }
-    else if (game.difficulty == "normal") { game.dif = 5 }
-    else if (game.difficulty == "hard") { game.dif = 6 }
-} // set Global Difficulity
-
 function deactivatePadHandlers() {
-    b1.off("click");
-    b2.off("click");
-    b3.off("click");
-    b4.off("click");
-    b5.off("click");
-    b6.off("click");
+    pads.off("click").off("mouseover").off("mouseenter");
 } // Remove click event from pads
 
 function playSound(snd) {
@@ -308,43 +227,104 @@ function playSound(snd) {
 
 } // Play sound if global sound is on
 
-function playerRound() {
-    game.player = [];
-    setTimeout(function() {
-        b1.on("click", function() {
-            addMove(this.id);
-            playSound(this.id);
-        });
-        b2.on("click", function() {
-            addMove(this.id);
-            playSound(this.id);
-        });
-        b3.on("click", function() {
-            addMove(this.id);
-            playSound(this.id);
-        });
-        b4.on("click", function() {
-            addMove(this.id);
-            playSound(this.id);
-        });
-        b5.on("click", function() {
-            addMove(this.id);
-            playSound(this.id);
-        });
-        b6.on("click", function() {
-            addMove(this.id);
-            playSound(this.id);
-        });
-        checkPlayer();
-        if (!isTouchDevice()) { hoverEffectsOn() }
-    }, game.inGameDelay + game.move.length * 1000);
-    middleCircle.removeClass("active");
-} // Adding click events to pads
-
 function addMove(pad) {
     game.player.push(pad);
     checkPlayer();
 } // Pushing player move into array
+
+function settingsButtonHide() {
+
+    settingsButton.off("click");
+    settingsButton.css("cursor", "default");
+    settingsButton.animate({ opacity: 0 }, 200);
+    game.settingsButton = false;
+} // Hide setting Button
+
+function settingsButtonShow() {
+    settingsButton.on("click", function() { settingsButtonToggle() });
+    settingsButton.css("cursor", "pointer");
+    settingsButton.animate({ opacity: 1 }, 200);
+    game.settingsButton = true;
+} // Show setting Button
+
+function activateMiddleButton() {
+    setTimeout(function() {
+        display.html('<i class="fas fa-play"></i>');
+        middleCircle.addClass("active");
+        middleCircle.on("click", function() { start() });
+    }, game.del + (game.move.length * 1000) + 200);
+} // Activate middle button hover and event
+
+function deactivateMiddleButton() {
+    display.html("");
+    middleCircle.removeClass("active");
+    middleCircle.off("click");
+} // Deactivate middle button hover and event
+
+function updateDisplay() {
+    middleCircle.addClass("active");
+    display.text("");
+    roundCounter.text(game.count);
+} // Update display
+
+function displayTextInMiddleButton(text, delay) {
+    setTimeout(function() { display.text(text) }, delay);
+} // Displays 'text' in middle button for 'delay' miliseconds
+
+function displayCountdown() {
+    game.state = 2;
+    if (!isTouchDevice()) { hoverEffectsOff() }
+    displayTextInMiddleButton("Watch", 100);
+    displayTextInMiddleButton("Remember", 600);
+    displayTextInMiddleButton("Repeat", 1100);
+    displayTextInMiddleButton("", 1600);
+    displayTextInMiddleButton("Round: " + game.count, 2000);
+    displayTextInMiddleButton("", 2800);
+    displayTextInMiddleButton("GO!!!", game.showMovesDelay);
+} // setTimeout function for middle menu countdownn
+
+function quick(text, delay) {
+    quickParagraph.text(text);
+    quickCard.animate({ top: "0" }, 300).delay(delay).animate({ top: "-16vw" }, 200);
+} // Shows 'text' in sliding bar for 'delay' ms
+
+function updateScore() {
+    game.score += game.move.length * (game.dif + game.random);
+    scoreLabel.text(game.score);
+    switch (game.player.length) {
+        case 1:
+            quick("Good Start", 300);
+            break;
+        case 3:
+            quick("Keep going", 300);
+            break;
+        case 5:
+            quick("Well Done", 300);
+            break;
+    }
+} // Update score. Extra quick bar comments on special move count
+
+function start() {
+    playSound("advance");
+    prepareNewGame();
+} // Start button clicked
+
+function prepareNewGame() {
+    game.showMovesDelay = 4000;
+    game.move = [];
+    game.player = [];
+    game.count = 0;
+    game.score = 0;
+    settingsButtonHide();
+    addCount();
+} // Clearing game variables
+
+function addCount() {
+    game.count++;
+    deactivateMiddleButton();
+    if (game.settingsCard) settingsButtonToggle();
+    addMoveToPattern();
+} // Add round
 
 function addMoveToPattern() {
     if (!game.rndPattern) {
@@ -360,58 +340,6 @@ function addMoveToPattern() {
     showMoves();
 } // Adding move to pattern or creating new pattern for n moves
 
-function colorPick(step) {
-    var colorPicked = "";
-    switch (step) {
-        case "b1":
-            {
-                return colorPicked = "red";
-            }
-        case "b2":
-            {
-                return colorPicked = "yellow";
-            }
-        case "b3":
-            {
-                return colorPicked = "white";
-            }
-        case "b4":
-            {
-                return colorPicked = "green";
-            }
-        case "b5":
-            {
-                return colorPicked = "blue";
-            }
-        case "b6":
-            {
-                return colorPicked = "purple";
-            }
-        default:
-            {
-                console.log("colorPick failed...");
-            }
-    }
-} // Color pick !!!!!!!!! to change
-
-function deactivateButtons() {
-    middleCircle.off("click");
-    settingsButton.off("click");
-    settingsButton.css("cursor", "default");
-    settingsButton.animate({ opacity: 0 }, 200);
-} // Remove handlers from buttons
-
-function activateButtons() {
-    setTimeout(function() {
-        display.html('<i class="fas fa-play"></i>');
-        middleCircle.addClass("active");
-        middleCircle.on("click", function() { start() });
-        settingsButton.on("click", function() { settings() });
-        settingsButton.animate({ opacity: 1 }, 200);
-        settingsButton.css("cursor", "pointer");
-    }, game.del + (game.move.length * 1000) + 200);
-} // Adding handlers to buttons
-
 function showMoves() {
     updateDisplay();
     deactivatePadHandlers();
@@ -419,56 +347,36 @@ function showMoves() {
     game.state = 3;
     game.move.forEach(function(element, x) {
         setTimeout(function() {
-            flash(element, colorPick(element));
+            flash(element);
             playSound(element);
-        }, 1000 * x + game.del);
-        setTimeout(function() { flash(element, "black") }, 1000 * x + 400 + game.del);
+        }, 900 * x + game.del);
     });
-    clearPlayer();
+    game.player = [];
     playerRound();
 } // setTimeout function for showing move pattern to player
 
-function clearPlayer() {
-    game.player = [];
-} // Clear player score
+function flash(pad) {
+    var chosenPad = $("#" + pad);
+    var padColor = chosenPad.css("border-left-color");
+    chosenPad.animate({backgroundColor: padColor},200).delay(200).animate({backgroundColor: "black"},200);
+} // changes pad background color for border color, after delay of 200ms reverse to black backgound;
 
-function checkIfSettingsOpen() {
-    if (game.settingsCard == true) {
-        settingsCard.animate({ opacity: 0 }, 500);
-        setTimeout(function() {
-            settingsCard.css("z-index", "-10");
-        }, 500);
-        game.settingsCard = false;
-    }
-} // Checking if Settings card is open and visible
-
-function updateDisplay() {
-    $("#move").text(game.move);
-    middleCircle.addClass("active");
-    display.text("");
-    $("#roundCounter").text(game.count);
-} // Update display
-
-function displayCountdown() {
-    game.state = 2;
-    if (!isTouchDevice()) { hoverEffectsOff() }
-    setTimeout(function() { display.text("Watch") }, 100);
-    setTimeout(function() { display.text("Remember") }, 600);
-    setTimeout(function() { display.text("Repeat") }, 1200);
-    setTimeout(function() { display.text("") }, 1800);
-    setTimeout(function() { display.text("Round: " + game.count) }, 2000);
-    setTimeout(function() { display.text("GO!!!") }, 2500);
-} // setTimeout function for middle menu countdownn
-
-function quick(text, delay) {
-    $("#quickBar p").text(text);
-    $("#quickBar").animate({ top: "0" }, 300).delay(delay).animate({ top: "-20vw" }, 200);
-} // Shows 'text' in sliding bar for 'delay' ms
+function playerRound() {
+    setTimeout(function() {
+        pads.on("click", function() {
+            addMove(this.id);
+            playSound(this.id);
+        });
+        checkPlayer();
+        if (!isTouchDevice()) { hoverEffectsOn() }
+    }, game.inGameDelay + game.move.length * 1000);
+    middleCircle.removeClass("active");
+} // Adding click events to pads
 
 function checkPlayer() {
 
     if ((game.player[game.player.length - 1] == game.move[game.player.length - 1]) && game.player.length > 0) {
-        display.text("Good");
+        display.text(game.player.length + " of " + game.move.length);
         setTimeout(function() { display.text(""); }, 400);
     }
     else if (game.player[game.player.length - 1] !== game.move[game.player.length - 1]) {
@@ -496,47 +404,15 @@ function checkPlayer() {
         }
     }
     else if (game.endG) {
-
+       
     }
 } // Checking player move and chosing how to proced
 
-function updateScore() {
-    game.score += game.move.length * (game.dif - 3);
-    $("#score").text(game.score);
-    switch (game.player.length) {
-        case 1:
-            quick("Good Start", 300);
-            break;
-        case 3:
-            quick("Keep going", 300);
-            break;
-        case 5:
-            quick("Well Done", 300);
-            break;
-    }
-} // Update score. Extra quick bar comments on special move count
-
 function nextLevel() {
+    game.showMovesDelay += 1000;
     updateScore();
     addCount();
 } // Next round
-
-function prepareNewGame() {
-    game.move = [];
-    game.player = [];
-    game.count = 0;
-    game.score = 0;
-    addCount();
-} // Clearing game variables
-
-function addCount() {
-    game.count++;
-    deactivateButtons();
-    setDif();
-    checkIfSettingsOpen();
-    addMoveToPattern();
-
-} // Add round
 
 function endGame() {
     game.move = [];
@@ -544,35 +420,10 @@ function endGame() {
     game.count = 0;
     game.state = 4;
     game.endG = false;
+    roundCounter.text("--");
+    scoreLabel.text("--");
     deactivatePadHandlers();
+    settingsButtonShow();
     hoverEffectsOff();
-    activateButtons();
-
+    activateMiddleButton();
 } // End game
-
-function start() {
-    playSound("advance");
-    prepareNewGame();
-} // Start button clicked
-
-
-
-
-
-// $(window).on('scroll', _.debounce(doSomething, 200));
-//
-//
-// var debounced_version = _.debounce(doSomething, 200);
-// $(window).on('scroll', debounced_version);
-//
-// If you need it
-// debounced_version.cancel();
-//
-// function throttled_version() {
-//   item[1].style.width = window.scrollY + 100 + 'px';
-// }
-//
-// window.addEventListener('scroll', _.throttle(throttled_version, 16), false);
-//
-//
-//
