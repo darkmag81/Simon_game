@@ -247,7 +247,6 @@ function playerRound() {
     middleCircle.removeClass("active");
 } // Adding click events to pads
 function checkPlayer() {
-
     if ((game.player[game.player.length - 1] == game.move[game.player.length - 1]) && game.player.length > 0) {
         display.text(game.player.length + " of " + game.move.length);
         setTimeout(function() { display.text(""); }, 400);
@@ -262,9 +261,7 @@ function checkPlayer() {
             if (!isTouchDevice()) {
                 hoverEffectsOff();
             }
-
             endGame();
-
         }, 1300);
     }
     if (!game.endG) {
@@ -277,7 +274,6 @@ function checkPlayer() {
         }
     }
     else if (game.endG) {
-       
     }
 } // Checking player move and chosing how to proced
 function nextLevel() {
@@ -362,8 +358,6 @@ function hoverEffectsOn() {
     }, function() {
         pads.css("background-color", "black");
     })
-    
-    
 } // add hover effects to pads
 function hoverEffectsOff() {
     pads.off("mouseenter");

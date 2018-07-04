@@ -387,20 +387,3 @@ h6 {
   color: white;
   font-size: 6vw;
 }
-/*
-@media(max-width:700px) {
-  .middleCircle {
-    min-width: 80px;
-    min-height: 80px;
-    width: 12vw;
-    height: 12vw;
-    border-radius: 50%;
-    border: 3px solid white;
-    color: white;
-    text-align: center;
-    font-size: 14px;
-    display: flex;
-    box-shadow: 10px 10px 45px -4px grey;
-  }
-}
-*/
