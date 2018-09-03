@@ -4,3 +4,5 @@
 ##
 ### Created by Maciej Pawelek
 ### HTML + CSS + Javascript
+
+https://darkmag81.github.io/Simon_game/
